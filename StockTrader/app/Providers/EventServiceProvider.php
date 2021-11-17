@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\StockBought;
+use App\Events\StockPurchaseEvent;
 use App\Listeners\StockBoughtNotification;
+use App\Listeners\StockPurchaseNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,13 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        StockBought::class => [
+        /*StockBought::class => [
             StockBoughtNotification::class
-        ],
-
-        [
-        ],
-
+        ],*/
+        StockPurchaseEvent::class => [
+            StockPurchaseNotification::class
+        ]
     ];
 
     /**
