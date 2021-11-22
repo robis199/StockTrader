@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\Collections\StockCollection;
 use App\Models\Company;
 use App\Models\Quote;
 use Finnhub\Api\DefaultApi;
@@ -17,27 +18,21 @@ class FinnhubApiRepository implements ApiRepositoryInterface
         $this->apiClient = $apiClient;
     }
 
-    public function searchBySymbol(string $symbol): Company
+    public function searchCompany(string $symbol): Company
     {
-        $symbol = strtoupper($symbol);
-        $cacheKey = 'companies.view' . $symbol;
+        $companies= $this->apiClient->symbolSearch($symbol);
 
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+        $collection = new StockCollection(Company::class);
+        foreach ($companies['search'] as $company)
+        {
+            $collection->add(
+                new Company(
+                    $company['description'],
+                    $symbol,
+                    $company['logo']
+                ));
         }
-
-        $responseData = $this->apiClient->companyProfile2($symbol);
-
-        $company = new Company(
-                $responseData['name'],
-                $symbol,
-                $responseData['logo'],
-
-        );
-
-        Cache::put($cacheKey, $company, now()->addMinute());
-
-        return $company;
+        return $collection;
 
     }
 
@@ -51,5 +46,13 @@ class FinnhubApiRepository implements ApiRepositoryInterface
         );
     }
 
+    public function getCompanyInfo(string $symbol): Company
+    {
+        $responseData = $this->apiClient->companyProfile2($symbol);
+
+        return new Company(
+
+        );
+    }
 
 }

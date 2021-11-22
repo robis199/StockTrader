@@ -31,5 +31,6 @@ class StockPurchaseConfirmationMail extends Mailable implements ShouldQueue
     {
         return $this
             ->view('mail.confirmation-mail');
+
     }
 }
