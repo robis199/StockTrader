@@ -3,27 +3,20 @@ namespace App\Models\Collections;
 
 use App\Models\Company;
 
-
 class StockCollection
 {
-    private $stocks = [];
-
-    public function __construct($stocks)
+    private $companies;
+    public function __construct(Company ...$company)
     {
-        foreach ($stocks as $item)
-        {
-            if($item instanceof Company) $this->add($item);
-        }
+        $this->companies = $company;
+    }
+    public function addCompany(Company $company):void
+    {
+        $this->companies[] = $company;
     }
 
-
-    public function add(Company $item): void
+    public function getCompanies(): array
     {
-        $this->stocks[] = $item;
-    }
-
-    public function getStocks(): array
-    {
-        return $this->stocks;
+        return $this->companies;
     }
 }

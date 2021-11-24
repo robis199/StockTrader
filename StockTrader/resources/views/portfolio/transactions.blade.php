@@ -9,24 +9,29 @@
             <tbody>
             <tr class="border-b">
                 <th class="text-left p-3 px-5">Company</th>
+                <th class="text-left p-3 px-5">Price bought</th>
+                <th class="text-left p-3 px-5">Amount acquired</th>
+                <th class="text-left p-3 px-5">Price sold</th>
                 <th class="text-left p-3 px-5">Current price</th>
                 <th></th>
             </tr>
-            {{--FOREACH--}}
-            <tr class="border-b hover:bg-orange-100 bg-gray-100">
-                <td class="p-3 px-5">======================</td>
-                <td class="p-3 px-5">============================</td>
-                <td class="p-3 px-5">
-                </td>
-                <td class="p-3 px-5 flex justify-end">
-                    <button
-                    <a</td>
-                type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none
-                focus:shadow-outline">Sell</button></td>
-                <a href="{{ URL::to('stocks/' . $value->id . '/edit') }}">Sell</a>
-            </tr>
+            @foreach($stocks as $stock)
+                <tr class="bg-blue-100 lg:text-black">
+                    <td class="p-3">{{$stock->company}}</td>
+                    <td class="p-3">{{$stock->buying_price}}</td>
+                    <td class="p-3">{{$stock->amount_acquired}}</td>
+                    <td class="p-3">{{$stock->price_sold ?? 'Not yet sold'}}</td>
+                    <td class="p-3"></td>
+
+                            <td class="p-3">
+                                    <form method="POST" action="{{route('stock.sell', $stock->id)}}">
+                                        @csrf
+                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="sell">Sell</button>
+                                    </form>
+                            </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
-    </div>
     </div>
 </x-app-layout>

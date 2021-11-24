@@ -15,9 +15,15 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('company_name');
-            $table->timestamps('acquired_at');
-            $table->timestamps('sold_at');
+            $table->integer('user_id');
+            $table->string('company');
+            $table->string('company_symbol');
+            $table->time('bought_at');
+            $table->float('buying_price');
+            $table->integer('amount_acquired');
+            $table->time('sold_at')->nullable()->default(null);
+            $table->float('selling_price')->nullable()->default(null);
+            $table->timestamps();
         });
     }
 

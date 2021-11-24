@@ -13,9 +13,9 @@ class CreateMyPortfolioTable extends Migration
      */
     public function up()
     {
-        Schema::create('my_portfolio', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->integer('user_id');
             $table->string('company');
             $table->string('company_symbol');
             $table->float('buying_price');
@@ -32,6 +32,6 @@ class CreateMyPortfolioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('my_portfolio');
+        Schema::dropIfExists('stocks');
     }
 }

@@ -1,57 +1,55 @@
 <?php
+
 namespace App\Repositories;
 
-use App\Models\Collections\StockCollection;
 use App\Models\Company;
-use App\Models\Quote;
 use Finnhub\Api\DefaultApi;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use Ramsey\Collection\Collection;
 
 class FinnhubApiRepository implements ApiRepositoryInterface
 {
-   private DefaultApi $apiClient;
+    private DefaultApi $apiClient;
 
     public function __construct(DefaultApi $apiClient)
     {
         $this->apiClient = $apiClient;
     }
 
-    public function searchCompany(string $symbol): Company
-    {
-        $companies= $this->apiClient->symbolSearch($symbol);
 
-        $collection = new StockCollection(Company::class);
-        foreach ($companies['search'] as $company)
+    public function searchCompany(string $name): Collection
+    {
+        $companies = $this->apiClient->symbolSearch($name);
+
+        $collection = new Collection(Company::class);
+
+        foreach ($companies['result'] as $company)
         {
             $collection->add(
                 new Company(
                     $company['description'],
-                    $symbol,
-                    $company['logo']
+                    $company['symbol'],
+                    $company['type']
                 ));
         }
         return $collection;
 
     }
 
-    public function getQuote(Company $company): Quote
+    public function getPrice(string $symbol):float
     {
-        $responseData = $this->apiClient->quote($company->getSymbol());
-        return new Quote(
-            $responseData['o'],
-            $responseData['pc'],
-            $responseData['c'],
-        );
+        return $this->apiClient->quote($symbol)['c'];
     }
 
     public function getCompanyInfo(string $symbol): Company
     {
-        $responseData = $this->apiClient->companyProfile2($symbol);
+        $companyProfile = $this->apiClient->companyProfile2($symbol);
 
         return new Company(
-
+            $companyProfile->getName(),
+            $symbol,
+            null,
+            $companyProfile,
+            $this->getPrice($symbol),
         );
     }
 

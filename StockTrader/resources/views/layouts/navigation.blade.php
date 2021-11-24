@@ -3,7 +3,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
@@ -15,11 +14,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('company.index')" :active="request()->routeIs('company.index')">
-                        {{ __('Search and Buy Stocks') }}
+                    <x-nav-link :href="route('stocks.index')" :active="request()->routeIs('stocks.index')">
+                        {{ __('Search and Buy Company shares') }}
                     </x-nav-link>
                     <x-nav-link :href="route('portfolio.transactions')" :active="request()->routeIs('portfolio.transactions')">
-                        {{ __('Transactions') }}
+                        {{ __('My stocks') }}
                     </x-nav-link>
                     <x-nav-link :href="route('portfolio.account')" :active="request()->routeIs('portfolio.account')">
                         {{ __('Account') }}

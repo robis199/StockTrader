@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <form action="{{route('company.search')}}" class="w-full max-w-sm">
+    <form action="{{route('stocks.search')}}" class="w-full max-w-sm">
         @csrf
         <div class="flex items-center border-b border-teal-500 py-2">
             <input id="company" name="company" type="text" placeholder="Search company by name or symbol"
@@ -18,26 +18,27 @@
         </div>
     </form>
 
-    @if (!is_null($companies))
+    @if (!empty($companies))
         <table class="w-full text-md bg-white shadow-md rounded mb-4">
             <tbody>
             <tr class="border-b">
                 <th class="text-left p-3 px-5">Name</th>
                 <th class="text-left p-3 px-5">Symbol</th>
+                <th class="text-left p-3 px-5">Stock type</th>
                 <th></th>
             </tr>
             </tbody>
 
             <tbody>
-            @foreach($companies as $company)
+            @foreach($companies->toArray() as $company)
                 <tr>
                     <td>{{ $company->getName()}}</td>
                     <td>{{ $company->getSymbol() }}</td>
-                    <td>{{ $company->getLogoUrl() }}</td>
+                    <td>{{ $company->getStockType() }}</td>
 
                     <td>
 
-                        <a class="btn btn-small btn-success" href="{{ route('stocks.info' . $company->getSymbol()) }}">More
+                        <a class="btn btn-small btn-success" href="{{ route('stocks.info', $company->getSymbol()) }}">More
                             info</a>
 
                     </td>

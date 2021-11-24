@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ApiRepositoryInterface::class, function () {
 
             $config = Configuration::getDefaultConfiguration()
-                ->setApiKey('token', 'c6d2ku2ad3i95gi9lg40');
+                ->setApiKey('token', env('FINNHUB_API_KEY'));
             $client = new DefaultApi(
                 new Client(),
                 $config
