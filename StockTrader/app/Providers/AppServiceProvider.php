@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\ApiRepositoryInterface;
 use App\Repositories\FinnhubApiRepository;
+use App\View\Composers\UserBalanceComposer;
 use Finnhub\Configuration;
 use Finnhub\Api\DefaultApi;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ApiRepositoryInterface::class, function () {
 
             $config = Configuration::getDefaultConfiguration()
-                ->setApiKey('token', env('FINNHUB_API_KEY'));
+                ->setApiKey('token', env('API_KEY'));
             $client = new DefaultApi(
                 new Client(),
                 $config
@@ -37,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::share('layouts.navigation', UserBalanceComposer::class);
     }
 }

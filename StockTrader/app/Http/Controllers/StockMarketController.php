@@ -31,16 +31,16 @@ class StockMarketController extends Controller
     {
 
             $name = strtolower($request['company']);
-            $cachedKey = 'companies.search.'.$name;
+            $key = 'companies.search.'.$name;
 
-            if(cache()->has($cachedKey)){
-                return view('stocks.index', ['companies' => cache()->get($cachedKey)]);
+            if(cache()->has($key)){
+                return view('stocks.index', ['companies' => cache()->get($key)]);
             }
             $companies = $this->apiRepository->searchCompany($name);
 
 
 
-            cache()->put($cachedKey,$companies);
+            cache()->put($key,$companies);
 
             return view('stocks.index', ['companies' => $companies]);
         }
@@ -48,17 +48,17 @@ class StockMarketController extends Controller
     public function info(string $symbol)
     {
 
-        $cachedKey = 'company.info.'.$symbol;
+        $key = 'company.info.'.$symbol;
 
-        if(cache()->has($cachedKey)){
+        if(cache()->has($key)){
             return view('stocks.info', [
-                'company'=> cache()->get($cachedKey),
+                'company'=> cache()->get($key),
                 'userBalance' =>(User::find(Auth::id()))->balance
             ]);
         }
         $company = $this->apiRepository->getCompanyInfo($symbol);
 
-        cache()->put($cachedKey,$company);
+        cache()->put($key,$company);
 
         return view('stocks.info',[
             'company'=> $company ,
@@ -78,7 +78,6 @@ class StockMarketController extends Controller
             'amount' => ['required','numeric' ]
         ]);
 
-        $stockAmount['amount'] = (int)$stockAmount['amount'];
 
         $balance = $user->cash_balance - $stockAmount['amount']*$this->apiRepository->getCompanyInfo($symbol)->getPrice();
 

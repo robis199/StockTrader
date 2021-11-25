@@ -29,6 +29,6 @@ class SendPurchaseConfirmation implements ShouldQueue
      */
     public function handle(StockWasPurchased $event)
     {
-        Mail::to('rcipulis@gmail.com')->send(new StockPurchaseConfirmationMail());
+        Mail::to(new StockPurchaseConfirmationMail($event->getCompany()));
     }
 }

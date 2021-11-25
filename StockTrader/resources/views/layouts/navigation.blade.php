@@ -24,6 +24,7 @@
                         {{ __('Account') }}
                     </x-nav-link>
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->

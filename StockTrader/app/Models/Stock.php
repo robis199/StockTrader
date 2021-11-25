@@ -18,7 +18,6 @@ class Stock extends Model
         'amount_acquired',
     ];
 
-
     public function user() :BelongsTo
     {
         return $this->belongsTo(User::class);

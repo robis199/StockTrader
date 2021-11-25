@@ -18,6 +18,7 @@ class Transactions extends Model
         'bought_at',
         'buying_price',
         'amount_acquired',
+        'profit',
         'sold_at',
         'selling_price',
     ];

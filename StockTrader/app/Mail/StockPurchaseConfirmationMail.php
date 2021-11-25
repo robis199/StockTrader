@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Company;
+use App\Models\Stock;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,25 +14,22 @@ class StockPurchaseConfirmationMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $subject = 'you just made a new trade!';
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
+    private Company $company;
+
+    public function __construct(Company $company){
+        $this->company = $company;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
+
     public function build()
     {
         return $this
-            ->view('mail.confirmation-mail');
-
+            ->from(env('MAIL_FROM_ADDRESS'))
+            ->view('mail.newTransaction')
+            ->markdown('mail.tradeDone', [
+                'subject' => $this->subject,
+                'company' => $this->company->getName(),
+                'price' => $this->company->getPrice()
+            ]);
     }
 }

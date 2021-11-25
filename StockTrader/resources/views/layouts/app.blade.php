@@ -20,14 +20,16 @@
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+                <div class="flex flex-row-reverse max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    @if(Auth::user()->cash_balance <=0)
+                        <p class="text-red-600">{{ Auth::user()->cash_balance }}$</p> CASH BALANCE:
+                    @else
+                     <p class="text-green-500">{{ Auth::user()->cash_balance }}$</p> CASH BALANCE:
+                    @endif
                 </div>
             </header>
 
-            <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>

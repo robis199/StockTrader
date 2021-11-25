@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\DepositMade;
 use App\Events\StockWasPurchased;
+use App\Listeners\SendDepositConfirmation;
 use App\Listeners\SendPurchaseConfirmation;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,8 +22,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        StockWasPurchased::class => [ //event
-                SendPurchaseConfirmation::class, //listener
+        StockWasPurchased::class => [
+                SendPurchaseConfirmation::class,
+        ],
+        DepositMade::class => [
+            SendDepositConfirmation::class
         ],
     ];
 
