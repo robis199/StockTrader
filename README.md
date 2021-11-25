@@ -66,8 +66,6 @@ You can now access the server at http://localhost:8000
 This applications uses the Breeze starter kit for authentication
 https://github.com/laravel/breeze
 
-- https://jwt.io/introduction/
-- https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
 ----------
 

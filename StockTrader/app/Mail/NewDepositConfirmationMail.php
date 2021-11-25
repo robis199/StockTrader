@@ -22,6 +22,6 @@ class NewDepositConfirmationMail extends Mailable
         return $this
             ->from(env('MAIL_FROM_ADDRESS'))
             ->subject(Auth::user()->name . "Wohoo, you just made a new deposit. Let's get trading!" )
-            ->markdown('mail.newDeposit',['deposit'=>$this->deposit]);
+            ->markdown('mail.depositMail',['deposit'=>$this->deposit]);
     }
 }

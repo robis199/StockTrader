@@ -23,23 +23,21 @@ class SellStock
         $sellingPrice = $this->apiRepository->getPrice($stock->company_symbol);
         $profit = $this->profits->profitFormula($stock->amount_acquired, $stock->buying_price, $sellingPrice);
 
-        $tradeTransaction = Transactions::create([
+        Transactions::create([
             'user_id' => $stock->user_id,
             'company' => $stock->company,
             'company_symbol' => $stock->company_symbol,
-            'buy_price' => $stock->buying_price,
+            'buying_price' => $stock->buying_price,
             'amount_acquired' => $stock->amount_acquired,
             'profit' => $profit,
             'sold_at' => now()->toDateTime(),
             'selling_price' => $sellingPrice,
             'bought_at' => $stock->created_at
         ]);
-
         $stockAmount = request()->validate([
             'amount' => ['required','numeric' ]
         ]);
 
-        $stockAmount['amount'] = (int)$stockAmount['amount'];
 
         if ($stock->amount_bought === $stockAmount) {
             $stock->delete();

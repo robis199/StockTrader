@@ -25,8 +25,7 @@ class StockPurchaseConfirmationMail extends Mailable implements ShouldQueue
     {
         return $this
             ->from(env('MAIL_FROM_ADDRESS'))
-            ->view('mail.newTransaction')
-            ->markdown('mail.tradeDone', [
+            ->markdown('mail.confirmationMail', [
                 'subject' => $this->subject,
                 'company' => $this->company->getName(),
                 'price' => $this->company->getPrice()

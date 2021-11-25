@@ -9,22 +9,33 @@
         <div class="mx-auto w-2/3">
             <h1 class="text-gray-700 font-bold tracking-wider">Sell Stock</h1>
             <p>{{$stock->amount_bought}}</p>
-    <div class="flex flex-wrap">
-        <form method="post" action="{{route('stock.sell', $stock)}}">
-            @csrf
+            <div class="flex flex-wrap">
+                <form method="post" action="{{route('stock.sell', $stock)}}">
+                    @csrf
 
-            <input class="top-3" id="amount" name="amount" type="text" placeholder="Amount you want to sell">
-            <button class="bg-yellow-200 hover:bg-yellow-500 hover:text-white text-yellow-500 text-center py-2 px-4 rounded" type="submit" value="buy">Sell stock</button>
-        </form>
-    </div>
+                    <input class="top-3" id="amount" name="amount" type="text" placeholder="Amount you want to sell">
+                    <button
+                        class="bg-yellow-200 hover:bg-yellow-500 hover:text-white text-yellow-500 text-center py-2 px-4 rounded"
+                        type="submit" value="buy">Sell stock
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
     @error('balance')
-<p class="text-red-500">{{ $message }}</p>
-@enderror
-@error('amount')
-<p class="text-red-500">{{ $message }}</p>
-@enderror
-
+    <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    @error('amount')
+    <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 </x-app-layout>

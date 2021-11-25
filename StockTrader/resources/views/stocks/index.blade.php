@@ -41,8 +41,7 @@
 
                     <td>
 
-                        <a class="btn btn-small btn-success" href="{{ route('stocks.info', $company->getSymbol()) }}">More
-                            info</a>
+                        <a class="btn btn-small btn-success" href="{{ route('stocks.info', $company->getSymbol()) }}">BUY</a>
 
                     </td>
                 </tr>

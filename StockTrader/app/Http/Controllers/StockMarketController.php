@@ -7,6 +7,7 @@ use App\Events\StockWasPurchased;
 use App\Models\Stock;
 use App\Models\User;
 use App\Repositories\ApiRepositoryInterface;
+use App\Rules\MarketActiveHours;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,60 +31,52 @@ class StockMarketController extends Controller
     public function search(Request $request)
     {
 
-            $name = strtolower($request['company']);
-            $key = 'companies.search.'.$name;
+        $name = strtolower($request['company']);
+        $key = 'companies.search.' . $name;
 
-            if(cache()->has($key)){
-                return view('stocks.index', ['companies' => cache()->get($key)]);
-            }
-            $companies = $this->apiRepository->searchCompany($name);
-
-
-
-            cache()->put($key,$companies);
-
-            return view('stocks.index', ['companies' => $companies]);
+        if (cache()->has($key)) {
+            return view('stocks.index', ['companies' => cache()->get($key)]);
         }
+        $companies = $this->apiRepository->searchCompany($name);
+
+        cache()->put($key, $companies);
+
+        return view('stocks.index', ['companies' => $companies]);
+    }
 
     public function info(string $symbol)
     {
+        $key = 'company.info.' . $symbol;
 
-        $key = 'company.info.'.$symbol;
-
-        if(cache()->has($key)){
+        if (cache()->has($key)) {
             return view('stocks.info', [
-                'company'=> cache()->get($key),
-                'userBalance' =>(User::find(Auth::id()))->balance
+                'company' => cache()->get($key),
             ]);
         }
         $company = $this->apiRepository->getCompanyInfo($symbol);
 
-        cache()->put($key,$company);
+        cache()->put($key, $company);
 
-        return view('stocks.info',[
-            'company'=> $company ,
-            'userBalance' =>(User::find(Auth::id()))->balance
+        return view('stocks.info', [
+            'company' => $company,
+            'userBalance' => (User::find(Auth::id()))->balance
         ]);
-
-
     }
 
 
-  public function buy(string $symbol)
+    public function buy(string $symbol)
     {
         $user = User::find(Auth::id());
 
-
         $stockAmount = request()->validate([
-            'amount' => ['required','numeric' ]
+            'amount' => ['required', 'numeric'],
         ]);
 
+        $balance = $user->cash_balance - $stockAmount['amount'] * $this->apiRepository->getCompanyInfo($symbol)->getPrice();
 
-        $balance = $user->cash_balance - $stockAmount['amount']*$this->apiRepository->getCompanyInfo($symbol)->getPrice();
+        $user->update(['cash_balance' => $balance]);
 
-        $user->update(['cash_balance'=> $balance]);
-
-        $key = 'company.info.'.$symbol;
+        $key = 'company.info.' . $symbol;
         $company = cache()->get($key);
 
         $stock = new Stock([

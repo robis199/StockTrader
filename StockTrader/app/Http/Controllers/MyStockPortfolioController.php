@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\User;
 use App\Services\SellStock;
 use App\Services\TransactionsMade;
+use http\Client\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
